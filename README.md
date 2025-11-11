@@ -1,8 +1,9 @@
 <h1>Identification des Hypothèses et Analyse des Données</h1>
 
-
-
  <strong>1. Analyse de l'intégrité des données</strong><br>
+
+ <img width="958" height="507" alt="etat_init" src="https://github.com/user-attachments/assets/e9af2762-eb52-4077-a4ac-5603e7fb4b29" />
+
 <strong> Transaction ID :</strong><br>
  Nous avons identifié 12 575 identifiants de transaction distincts, ce qui confirme l'absence de doublons dans notre jeu de données. Chaque transaction est unique.<br>
 <strong>Customer ID et Catégories de produits :</strong><br>
@@ -13,6 +14,9 @@ Cette différence s'explique par la présence de valeurs manquantes représentan
 pour notre analyse (nous disposons déjà de la catégorie), nous décidons de remplacer ces valeurs 
 null par la mention "Non spécifié".<br>
 <strong>2. Traitement des valeurs manquantes dans les colonnes financières</strong><br>
+
+<img width="959" height="510" alt="etat_init2" src="https://github.com/user-attachments/assets/602c3e92-bb5f-46ef-b5c1-bff9cc807f71" />
+
 <strong>Observation :</strong><br>
 Les colonnes Price, Quantity et Total Spent présentent chacune <strong> 5% </strong>de valeurs manquantes. 
 Relation mathématique identifiée :
@@ -36,3 +40,4 @@ Suppression de la ligne concernée<br>
 Format de date cohérent et uniforme. Aucune anomalie détectée.<br>
 <strong>Discount (Réduction appliquée) :</strong><br>
 <strong>Trois valeurs distinctes observées :</strong> True (Oui), False (Non), et null (Non renseigné). Les valeurs null représentent les transactions pour lesquelles l'information sur la réduction n'a pas été enregistrée. Nous décidons de remplacer ces valeurs null par "Unknone" .
+
