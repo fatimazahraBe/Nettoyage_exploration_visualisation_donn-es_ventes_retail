@@ -109,14 +109,14 @@ Ces tables servent d'axes d'analyse.
     * *Contenu :* Référentiel unique des clients.
     * *Relation :* **1 ➔ * (Plusieurs)** vers `Transactions` via `Customer ID`.
 
-* **`Products`** (3 colonnes)
+* **`Products`** (4 colonnes)
     * *Contenu :* Détails des articles vendus.
     * *Relation :* **1 ➔ * (Plusieurs)** vers `Transactions` via `Item ID`.
     * *Rôle :* Table intermédiaire portant la clé étrangère vers les catégories.
 
 * **`Categories`**
     * *Contenu :* Référentiel des catégories de produits.
-    * *Relation :* **1 ➔ * (Plusieurs)** vers `Products` via la colonne `Category`.
+    * *Relation :* **1 ➔ * (Plusieurs)** vers `Products` via la colonne `Category_ID`.
 
 ---
 
@@ -150,10 +150,13 @@ erDiagram
 
     Products {
         string Item_ID PK
-        string Item_Name
-        string Category FK
+        string Item
+        int Price Per Unit
+        string Category_ID FK
     }
 
     Categories {
-        string Category PK
+        string Category_ID PK
+        string Category
     }
+
