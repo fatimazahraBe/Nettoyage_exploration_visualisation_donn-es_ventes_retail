@@ -85,3 +85,75 @@ Les colonnes `Price`, `Quantity` et `Total Spent` présentent chacune **5%** de 
   - **3 valeurs :** `True` (Oui), `False` (Non), et `null`.
   - *Analyse :* Les valeurs `null` indiquent que l'info n'a pas été enregistrée.
   - 🛠 **Décision :** Remplacement des `null` par **"Unknown"**.
+
+## 4️⃣ Modélisation du modèle de données
+
+### 🏗️ Architecture : Schéma en Flocon (Snowflake Schema)
+
+Nous avons structuré les données selon une architecture normalisée pour garantir l'intégrité des dimensions.
+Le modèle s'articule autour d'une table de faits centrale reliée à des dimensions, dont l'une est hiérarchisée (`Categories` ➔ `Products` ➔ `Transactions`).
+
+### 📂 Dictionnaire des Tables
+
+#### 1. Table de Faits : `Transactions`
+Contient l'ensemble des événements de vente.
+* **Clés Primaires/Étrangères :** `Transaction ID`, `Customer ID` (FK), `Item ID` (FK).
+* **Métriques (Mesures) :** `Quantity`, `Total Spent`.
+* **Attributs de contexte :** `Payment Method`, `Location`, `Discount Applied`.
+* **Attributs Temporels :** `Transaction Date`, `Transaction Month`, `Transaction Day`.
+
+#### 2. Tables de Dimension
+Ces tables servent d'axes d'analyse.
+
+* **`Customers`**
+    * *Contenu :* Référentiel unique des clients.
+    * *Relation :* **1 ➔ * (Plusieurs)** vers `Transactions` via `Customer ID`.
+
+* **`Products`** (3 colonnes)
+    * *Contenu :* Détails des articles vendus.
+    * *Relation :* **1 ➔ * (Plusieurs)** vers `Transactions` via `Item ID`.
+    * *Rôle :* Table intermédiaire portant la clé étrangère vers les catégories.
+
+* **`Categories`**
+    * *Contenu :* Référentiel des catégories de produits.
+    * *Relation :* **1 ➔ * (Plusieurs)** vers `Products` via la colonne `Category`.
+
+---
+
+### 🗺️ Diagramme Relationnel (ERD)
+
+```mermaid
+erDiagram
+    %% Relations
+    Customers ||--|{ Transactions : "Effectue"
+    Products ||--|{ Transactions : "Est vendu dans"
+    Categories ||--|{ Products : "Regroupe"
+
+    %% Définition précise des colonnes
+    Transactions {
+        string Transaction_ID PK
+        string Customer_ID FK
+        string Item_ID FK
+        int Quantity
+        float Total_Spent
+        string Payment_Method
+        string Location
+        date Transaction_Date
+        string Transaction_Month
+        int Transaction_Day
+        bool Discount_Applied
+    }
+    
+    Customers {
+        string Customer_ID PK
+    }
+
+    Products {
+        string Item_ID PK
+        string Item_Name
+        string Category FK
+    }
+
+    Categories {
+        string Category PK
+    }
