@@ -98,9 +98,8 @@ Le modèle s'articule autour d'une table de faits centrale reliée à des dimens
 #### 1. Table de Faits : `Transactions`
 Contient l'ensemble des événements de vente.
 * **Clés Primaires/Étrangères :** `Transaction ID`, `Customer ID` (FK), `Item ID` (FK).
-* **Métriques (Mesures) :** `Quantity`, `Total Spent`.
-* **Attributs de contexte :** `Payment Method`, `Location`, `Discount Applied`.
-* **Attributs Temporels :** `Transaction Date`, `Transaction Month`, `Transaction Day`.
+* **Summarization :** `Quantity`, `Total Spent`.
+* **Métriques (Mesures) :**  `Transaction Date`.
 
 #### 2. Tables de Dimension
 Ces tables servent d'axes d'analyse.
@@ -159,4 +158,5 @@ erDiagram
         string Category_ID PK
         string Category
     }
+
 
