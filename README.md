@@ -1,5 +1,10 @@
 # Retail Store Sales Analysis - Documentation
 
+## 👥 Présentation de l'équipe
+- Équipe : Flawless
+- Membres : Fatima, Amine, Souad, Safia
+- Taches : voir Trello
+
 ## 📅 Documentation - Day 1 (10/11/2025)
 
 ### Step 1: Data Loading
@@ -86,7 +91,10 @@ Les colonnes `Price`, `Quantity` et `Total Spent` présentent chacune **5%** de 
   - *Analyse :* Les valeurs `null` indiquent que l'info n'a pas été enregistrée.
   - 🛠 **Décision :** Remplacement des `null` par **"Unknown"**.
 
-## 4️⃣ Modélisation du modèle de données
+
+## 🚀 Documentation - Jour 3 : Creation des tables de dimension
+
+### 4️⃣ Modélisation du modèle de données
 
 ### 🏗️ Architecture : Schéma en Flocon (Snowflake Schema)
 
@@ -158,5 +166,19 @@ erDiagram
         string Category_ID PK
         string Category
     }
+```
 
+## 🚀 Documentation - Jour 4 : Conception et Documentation du Tableau de Bord Power BI : Mesures DAX, KPI et Vues Métier
 
+### 5️⃣ & 6️⃣ Mesures DAX, KPI et Vues Métier
+#### Page 2 : 
+| KPI | Q a Repondre &nbsp;&nbsp;&nbsp;&nbsp; | DAX or M |
+| :--- | :--- | :--- |
+| **NB total des clients** | Combien de clients avons-nous au total ? | `NbUnique Customers = COUNTROWS(Customers)`|
+| **Premier transaction** | Est-ce que nous avons de nouveaux clients ? | `Date 1ère Transaction = CALCULATE( MIN(Transactions[Transaction Date]), FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID]) )` |
+| **Date dernier transaction** | Nos clients sont-ils fidèles ? | `Date dernier transaction = CALCULATE( MAX(Transactions[Transaction Date]), FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID]))` |
+| **NB des categories consommés par client** | Quelles sont les catégories les plus recherchées par nos clients ? | `Nb Catégories Consommées = CALCULATE( DISTINCTCOUNT(Transactions[Category]), RELATEDTABLE(Transactions) )` |
+| **Avg Total Spent** | Quel est le montant moyen dépensé par transaction ? | `CALCULATE( AVERAGE(Transactions[Total Spent]), FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID]) )` |
+| **% Achats avec Promotion** | Les clients sont-ils plus intéressés par les promotions ? | `VAR TotalConnus = CALCULATE(COUNTROWS(Transactions), Transactions[Discount Applied] IN { "true", "false" }) VAR TotalPromo = CALCULATE(COUNTROWS(Transactions), Transactions[Discount Applied] = "true") RETURN DIVIDE(TotalPromo, TotalConnus)` |
+| **Avg Days Between** | À quelle fréquence nos clients reviennent-ils ? | *Calculated in Power Query (M)* |
+| **Nb des Transactions par categorie** | Quelle est la catégorie dominante ? | `CALCULATE(COUNTROWS(Transactions),FILTER(Transactions,Transactions[Category]=Categories[Category]))` |
