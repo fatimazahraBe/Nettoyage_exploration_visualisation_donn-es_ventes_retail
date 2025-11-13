@@ -171,6 +171,21 @@ erDiagram
 ## 🚀 Documentation - Jour 4 : Conception et Documentation du Tableau de Bord Power BI : Mesures DAX, KPI et Vues Métier
 
 ### 5️⃣ & 6️⃣ Mesures DAX, KPI et Vues Métier
+#### Page 1 :
+| KPI / Visualisation | Q a Repondre | DAX / Source |
+| :--- | :--- | :--- |
+| **CA par Année et Mois** (Line Chart) | Comment évolue notre chiffre d'affaires mois par mois au fil du temps ? | *Standard Aggregation / Power Query* |
+| **CA par Location** (Donut Chart) | Où nos clients achètent-ils principalement ? | *Standard Aggregation / Power Query* |
+| **CA par Année** (Bar Chart - Right) | Comment notre chiffre d'affaires annuel évolue-t-il ? | *Standard Aggregation / Power Query* |
+| **CA par Category** (Bar Chart - Left) | Quelles catégories de produits génèrent le plus de revenus ? | *Standard Aggregation / Power Query* |
+| **CA par Payment Method** (Pie Chart) | Comment nos clients paient-ils leurs achats ? | *Standard Aggregation / Power Query* |
+| **Produit Plus Vendu** (Table) | Quel est le produit le plus vendu (best-seller) dans chaque catégorie ? | `Produit Plus Vendu = VAR TopProduct = MAXX( TOPN( 1, VALUES(Products[Item]), COUNTROWS(Transactions), DESC ), Products[Item] ) RETURN TopProduct` |
+| **CA Total** (Card) | C'est quoi le total des ventes ? | `CA = SUM(Transactions[Total Spent])` |
+| **Panier Moyen** (Card) | Quel est le montant moyen d'achat dans chaque panier ? | `Panier Moyen = DIVIDE( [CA], DISTINCTCOUNT(Transactions[Transaction ID]), 0 )` |
+| **% Ventes Online** (Card) | Quelle est la part du chiffre d'affaires réalisée en ligne ? | `% Ventes Online = DIVIDE( CALCULATE([CA], Transactions[Location] = "Online"), CALCULATE([CA], ALL(Transactions[Location])), 0 )` |
+| **% Ventes In-Store** (Card) | Quelle est la part du chiffre d'affaires réalisée en magasin ? | `% Ventes In-Store = DIVIDE( CALCULATE([CA], Transactions[Location] = "In-Store"), CALCULATE([CA], ALL(Transactions[Location])), 0 )` |
+
+
 #### Page 2 : 
 | KPI | Q a Repondre &nbsp;&nbsp;&nbsp;&nbsp; | DAX or M |
 | :--- | :--- | :--- |
@@ -182,3 +197,4 @@ erDiagram
 | **% Achats avec Promotion** | Les clients sont-ils plus intéressés par les promotions ? | `VAR TotalConnus = CALCULATE(COUNTROWS(Transactions), Transactions[Discount Applied] IN { "true", "false" }) VAR TotalPromo = CALCULATE(COUNTROWS(Transactions), Transactions[Discount Applied] = "true") RETURN DIVIDE(TotalPromo, TotalConnus)` |
 | **Avg Days Between** | À quelle fréquence nos clients reviennent-ils ? | *Calculated in Power Query (M)* |
 | **Nb des Transactions par categorie** | Quelle est la catégorie dominante ? | `CALCULATE(COUNTROWS(Transactions),FILTER(Transactions,Transactions[Category]=Categories[Category]))` |
+
