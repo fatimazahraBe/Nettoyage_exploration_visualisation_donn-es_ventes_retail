@@ -187,7 +187,7 @@ erDiagram
 
 
 #### Page 2 : 
-| KPI | Q a Repondre &nbsp;&nbsp;&nbsp;&nbsp; | DAX or M |
+| KPI | Question à Répondre | DAX or M |
 | :--- | :--- | :--- |
 | **NB total des clients** | Combien de clients avons-nous au total ? | `NbUnique Customers = COUNTROWS(Customers)`|
 | **Premier transaction** | Est-ce que nous avons de nouveaux clients ? | `Date 1ère Transaction = CALCULATE( MIN(Transactions[Transaction Date]), FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID]) )` |
@@ -197,4 +197,6 @@ erDiagram
 | **% Achats avec Promotion** | Les clients sont-ils plus intéressés par les promotions ? | `VAR TotalConnus = CALCULATE(COUNTROWS(Transactions), Transactions[Discount Applied] IN { "true", "false" }) VAR TotalPromo = CALCULATE(COUNTROWS(Transactions), Transactions[Discount Applied] = "true") RETURN DIVIDE(TotalPromo, TotalConnus)` |
 | **Avg Days Between** | À quelle fréquence nos clients reviennent-ils ? | *Calculated in Power Query (M)* |
 | **Nb des Transactions par categorie** | Quelle est la catégorie dominante ? | `CALCULATE(COUNTROWS(Transactions),FILTER(Transactions,Transactions[Category]=Categories[Category]))` |
+| **Discount at First Transaction** | Combien de clients ont été attirés par une remise (Discount) lors de leur premier achat ? | `VAR First_Date = Customers[Date 1ère Transaction] VAR HasTrue = COUNTROWS(FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID] && Transactions[Transaction Date] = First_Date && Transactions[Discount Applied] = "true")) VAR HasFalse = COUNTROWS(FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID] && Transactions[Transaction Date] = First_Date && Transactions[Discount Applied] = "false")) RETURN IF(HasTrue > 0, "true", IF(HasFalse > 0, "false", "unknown"))`|
+
 
