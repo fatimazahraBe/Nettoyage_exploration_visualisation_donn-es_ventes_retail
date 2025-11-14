@@ -5,6 +5,9 @@
 - Membres : Fatima, Amine, Souad, Safiya
 - Taches : voir Trello
 
+<img width="1918" height="972" alt="image" src="https://github.com/user-attachments/assets/137fe148-23c3-4b72-9a67-cbfe535ec43b" />
+
+
 ## 📅 Documentation - Day 1 (10/11/2025)
 
 ### Step 1: Data Loading
@@ -209,3 +212,4 @@ erDiagram
 <p align="center">
   <img width="710" height="444" alt="page_marketing_powerbi" src="https://github.com/user-attachments/assets/aa9a2bc0-072d-458d-9cb4-520998d3f801" />
 </p>
+
