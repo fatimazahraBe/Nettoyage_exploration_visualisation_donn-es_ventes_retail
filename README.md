@@ -55,7 +55,7 @@
   - 🛠 **Décision :** Les valeurs null dans la colonne Item seront remplacées par le nom correspondant du produit, déterminé à partir de sa catégorie (category) et de son prix unitaire (price per unit). En effet, la présence ou non d’un discount n’entraîne aucun changement du prix unitaire, ce qui permet d’identifier correctement l’article manquant.
   - **N.B :** Avant de remplacer les valeurs null de la colonne Item, nous vérifions d’abord si les produits d’une même catégorie ont des prix unitaires différents.
  
-    <img width="960" height="495" alt="correction_erreur7" src="https://github.com/user-attachments/assets/922389ea-0a42-4283-ab24-50d394d832ac" />
+    <img width="760" height="395" alt="correction_erreur7" src="https://github.com/user-attachments/assets/922389ea-0a42-4283-ab24-50d394d832ac" />
 
 
 - **Payment Method (Méthode de paiement) :**
@@ -173,7 +173,7 @@ erDiagram
 
 ## 🚀 Documentation - Jour 4 (13/11/2025) : Conception et Documentation du Tableau de Bord Power BI : Mesures DAX, KPI et Vues Métier
 
-### 5️⃣ & 6️⃣ Mesures DAX, KPI et Vues Métier
+### 5️⃣ & 6️⃣ Mesures KPI, DAX et Vues Métier
 #### Page 1 :
 | KPI / Visualisation | Q a Repondre | DAX / Source |
 | :--- | :--- | :--- |
@@ -203,5 +203,9 @@ erDiagram
 | **Discount at First Transaction** | Combien de clients ont été attirés par une remise (Discount) lors de leur premier achat ? | `VAR First_Date = Customers[Date 1ère Transaction] VAR HasTrue = COUNTROWS(FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID] && Transactions[Transaction Date] = First_Date && Transactions[Discount Applied] = "true")) VAR HasFalse = COUNTROWS(FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID] && Transactions[Transaction Date] = First_Date && Transactions[Discount Applied] = "false")) RETURN IF(HasTrue > 0, "true", IF(HasFalse > 0, "false", "unknown"))`|
 
 
+##### Tableau de bord : Vue Marketing & fidélisation
 
 
+<p align="center">
+  <img width="710" height="444" alt="page_marketing_powerbi" src="https://github.com/user-attachments/assets/aa9a2bc0-072d-458d-9cb4-520998d3f801" />
+</p>
