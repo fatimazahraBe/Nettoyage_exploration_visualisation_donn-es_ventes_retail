@@ -35,9 +35,9 @@
 
 ---
 
-## 🚀 Documentation - Jour 2 : Identification des Hypothèses et Analyse des Données
+## 🚀 Documentation - Jour 2 (12/11/2025) : Identification des Hypothèses et Analyse des Données
 
-### 1. Analyse de l'intégrité des données
+### 1. Analyse et traitement des anomalies dans les colonnes non financières
 
 ![etat_init](https://github.com/user-attachments/assets/e9af2762-eb52-4077-a4ac-5603e7fb4b29)
 
@@ -52,9 +52,29 @@
 
 - **Item (Nom du produit) :**
   - L'écart ci-dessus s'explique par la présence de valeurs manquantes (**10%** des données) dans la colonne `Item`.
-  - 🛠 **Décision :** L'identification précise du nom du produit n'étant pas essentielle (la catégorie suffit), nous remplaçons les valeurs `null` par **"Non spécifié"**.
+  - 🛠 **Décision :** Les valeurs null dans la colonne Item seront remplacées par le nom correspondant du produit, déterminé à partir de sa catégorie (category) et de son prix unitaire (price per unit). En effet, la présence ou non d’un discount n’entraîne aucun changement du prix unitaire, ce qui permet d’identifier correctement l’article manquant.
+  - **N.B :** Avant de remplacer les valeurs null de la colonne Item, nous vérifions d’abord si les produits d’une même catégorie ont des prix unitaires différents.
+ 
+    <img width="960" height="495" alt="correction_erreur7" src="https://github.com/user-attachments/assets/922389ea-0a42-4283-ab24-50d394d832ac" />
 
-### 2. Traitement des valeurs manquantes dans les colonnes financières
+
+- **Payment Method (Méthode de paiement) :**
+  - **3 modalités :** Cash (Espèces), Card (Carte bancaire), Digital Wallet (Portefeuille numérique).
+  - ✅ Aucune valeur manquante.
+
+- **Location (Point de vente) :**
+  - **2 modalités :** Online (En ligne), In-Store (En magasin).
+  - ✅ Données complètes.
+
+- **Transaction Date :**
+  - ✅ Format de date cohérent et uniforme. Aucune anomalie.
+
+- **Discount (Réduction appliquée) :**
+  - **3 valeurs :** `True` (Oui), `False` (Non), et `null`.
+  - *Analyse :* Les valeurs `null` indiquent que l'info n'a pas été enregistrée.
+  - 🛠 **Décision :** Remplacement des `null` par **"Unknown"**.
+
+### 2. Analyse et traitement des anomalies dans les colonnes financières
 
 ![etat_init2](https://github.com/user-attachments/assets/602c3e92-bb5f-46ef-b5c1-bff9cc807f71)
 
@@ -73,26 +93,9 @@ Les colonnes `Price`, `Quantity` et `Total Spent` présentent chacune **5%** de 
 | **Cas 3 : Quantity manquante** | Total Spent, Price | `Quantity = Total Spent ÷ Price` |
 | **Cas 4 : 2+ variables manquantes** | Insuffisantes | 🗑 **Suppression de la ligne** (Impossibilité de reconstituer l'info de manière fiable). |
 
-### 3. Analyse des variables catégorielles
-
-- **Payment Method (Méthode de paiement) :**
-  - **3 modalités :** Cash (Espèces), Card (Carte bancaire), Digital Wallet (Portefeuille numérique).
-  - ✅ Aucune valeur manquante.
-
-- **Location (Point de vente) :**
-  - **2 modalités :** Online (En ligne), In-Store (En magasin).
-  - ✅ Données complètes.
-
-- **Transaction Date :**
-  - ✅ Format de date cohérent et uniforme. Aucune anomalie.
-
-- **Discount (Réduction appliquée) :**
-  - **3 valeurs :** `True` (Oui), `False` (Non), et `null`.
-  - *Analyse :* Les valeurs `null` indiquent que l'info n'a pas été enregistrée.
-  - 🛠 **Décision :** Remplacement des `null` par **"Unknown"**.
 
 
-## 🚀 Documentation - Jour 3 : Creation des tables de dimension
+## 🚀 Documentation - Jour 3 (12/11/2025) : Creation des tables de dimension
 
 ### 4️⃣ Modélisation du modèle de données
 
@@ -168,7 +171,7 @@ erDiagram
     }
 ```
 
-## 🚀 Documentation - Jour 4 : Conception et Documentation du Tableau de Bord Power BI : Mesures DAX, KPI et Vues Métier
+## 🚀 Documentation - Jour 4 (13/11/2025) : Conception et Documentation du Tableau de Bord Power BI : Mesures DAX, KPI et Vues Métier
 
 ### 5️⃣ & 6️⃣ Mesures DAX, KPI et Vues Métier
 #### Page 1 :
@@ -198,5 +201,6 @@ erDiagram
 | **Avg Days Between** | À quelle fréquence nos clients reviennent-ils ? | *Calculated in Power Query (M)* |
 | **Nb des Transactions par categorie** | Quelle est la catégorie dominante ? | `CALCULATE(COUNTROWS(Transactions),FILTER(Transactions,Transactions[Category]=Categories[Category]))` |
 | **Discount at First Transaction** | Combien de clients ont été attirés par une remise (Discount) lors de leur premier achat ? | `VAR First_Date = Customers[Date 1ère Transaction] VAR HasTrue = COUNTROWS(FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID] && Transactions[Transaction Date] = First_Date && Transactions[Discount Applied] = "true")) VAR HasFalse = COUNTROWS(FILTER(Transactions, Transactions[Customer ID] = Customers[Customer ID] && Transactions[Transaction Date] = First_Date && Transactions[Discount Applied] = "false")) RETURN IF(HasTrue > 0, "true", IF(HasFalse > 0, "false", "unknown"))`|
+
 
 
